@@ -2,7 +2,7 @@
 
 #   reconnect_mullvad_every_n_seconds [seconds to wait]
 
-#     v0.2 July 1st '24 by d@v1d.dk
+#     v0.21 July 1st '24 by d@v1d.dk
 #
 # Starts a timer to reconnect Mullvad:
 #
@@ -11,10 +11,9 @@
 # CTRL-C (once) reconnects now and restarts timer.
 # Ctrl-C (twice) to quit.
 
-
-
 import time, sh, sys
 from progress.bar import FillingSquaresBar as Bar
+import random
 
 if len(sys.argv) == 1:
     print("please supply default argument: time to wait in seconds")
@@ -22,6 +21,8 @@ if len(sys.argv) == 1:
 time_in_secs = int(sys.argv[1])
 time_in_minutes = int(time_in_secs/60)
 
+
+filename = sys.argv[0].split("/")[-1]
 while True:
     bar = Bar(f'Waiting {time_in_minutes} minutes', max=time_in_secs)
     for i in range(time_in_secs):
@@ -33,11 +34,24 @@ while True:
                 time.sleep(0.5)
                 break # breaks for loop (only), finishes while loop
             except KeyboardInterrupt:
-                print(f"\nexiting... \nthank you for using {sys.argv[0][2:]}")
+                print(f"\nexiting... \nthank you for using {filename}")
                 sys.exit()
     print("\nreconnecting Mullvad...")
-    sh.mullvad("reconnect")
-    time.sleep(5)
-    response = sh.mullvad("status")
-    print(response)
+    if len(sys.argv) == 2:    
+        sh.mullvad("reconnect")
+        time.sleep(5)
+        response = sh.mullvad("status")
+        print(response)
+    if len(sys.argv) == 3:
+        countries = sys.argv[2].split()
+        rand_country = random.choice(countries)
+        sh.mulocation(rand_country)
+        try:
+            time.sleep(2)
+        except KeyboardInterrupt:
+            print(f"\nexiting... \nthank you for using {filename}")
+            sys.exit()
+        new_status = sh.mullvad("status")
+        print(new_status)
+
 
