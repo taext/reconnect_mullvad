@@ -1,5 +1,18 @@
 #!/usr/bin/env python
 
+#   reconnect_mullvad_every_n_seconds [seconds to wait]
+
+#     v0.2 July 1st '24 by d@v1d.dk
+#
+# Starts a timer to reconnect Mullvad:
+#
+#   reconnect_mullvad_every_n_seconds [seconds to wait]
+#
+# CTRL-C (once) reconnects now and restarts timer.
+# Ctrl-C (twice) to quit.
+
+
+
 import time, sh, sys
 from progress.bar import FillingSquaresBar as Bar
 
@@ -18,7 +31,7 @@ while True:
         except KeyboardInterrupt:
             try:
                 time.sleep(0.5)
-                break
+                break # breaks for loop (only), finishes while loop
             except KeyboardInterrupt:
                 print(f"\nexiting... \nthank you for using {sys.argv[0][2:]}")
                 sys.exit()
