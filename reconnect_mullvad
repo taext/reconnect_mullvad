@@ -1,31 +1,19 @@
 #!/usr/bin/env python
 
-#   reconnect_mullvad_every_n_seconds [seconds to wait]
-
+#   reconnect_mullvad_every_n_seconds
 #     v0.3 July 1st '24 by d@v1d.dk
-#
-# Starts a timer to reconnect Mullvad:
-#
-#   reconnect_mullvad_every_n_seconds [seconds to wait]
-#
-# CTRL-C (once) reconnects now and restarts timer.
-# Ctrl-C (twice) to quit.
-
-# what's next: add proper cli arg handling
 
 import time, sh, sys, re
 from progress.bar import FillingSquaresBar as Bar
 import random, argparse
 
-description = "Waits for n minutes and then changes Mullvad IP, optionally also country"
+description = """Waits for n minutes and then changes Mullvad IP, optionally also country. 
+                 Ctrl-C to change now and restart timer, Ctrl-C twice to exit."""
 parser = argparse.ArgumentParser(description=description)
 parser.add_argument("time_in_minutes", help="time to wait in minutes")
-parser.add_argument("-c", "--countries", help="a string of 2-character country codes to alternate between")
+parser.add_argument("-c", "--countries", help="a string of 2-character country codes to randomly alternate between")
 args = parser.parse_args()
 
-# if len(sys.argv) == 1:
-#     print("please supply default argument: time to wait in seconds")
-#     sys.exit()
 time_in_minutes = int(args.time_in_minutes)
 time_in_secs = time_in_minutes * 60
 
@@ -36,7 +24,10 @@ while True:
     print(mullvad_status)
     m = re.findall('Connect...? to (\w\w)', mullvad_status)
     current_country = set(m[0]) 
-    bar = Bar(f'Waiting {time_in_minutes} minutes', max=time_in_secs)
+    if time_in_minutes > 1:
+        bar = Bar(f'Waiting {time_in_minutes} minutes', max=time_in_secs)
+    else:
+        bar = Bar(f'Waiting {time_in_minutes} minute', max=time_in_secs)
     for i in range(time_in_secs):
         try:
             time.sleep(1)
@@ -60,7 +51,7 @@ while True:
         rand_country = random.choice(countries_wo_current)
         sh.mulocation(rand_country)
         try:
-            time.sleep(0.5)
+            time.sleep(2)
         except KeyboardInterrupt:
             print(f"\nexiting... \nthank you for using {filename}")
             sys.exit()
