@@ -41,7 +41,7 @@ while True:
             except KeyboardInterrupt:
                 print(f"\nexiting... \nthank you for using {filename}")
                 sys.exit()
-    print("\nreconnecting Mullvad...")
+    print("\n\nreconnecting Mullvad...")
     if not args.countries:      # only update IP (same country)    
         sh.mullvad("reconnect")
         time.sleep(2)    # wait for mullvad
