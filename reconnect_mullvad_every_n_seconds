@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+
+import time, sh, sys
+from progress.bar import FillingSquaresBar as Bar
+
+if len(sys.argv) == 1:
+    print("please supply default argument: time to wait in seconds")
+    sys.exit()
+time_in_secs = int(sys.argv[1])
+time_in_minutes = int(time_in_secs/60)
+
+while True:
+    bar = Bar(f'Waiting {time_in_minutes} minutes', max=time_in_secs)
+    for i in range(time_in_secs):
+        try:
+            time.sleep(1)
+            bar.next()
+        except KeyboardInterrupt:
+            try:
+                time.sleep(0.5)
+                break
+            except KeyboardInterrupt:
+                print(f"\nexiting... \nthank you for using {sys.argv[0][2:]}")
+                sys.exit()
+    print("\nreconnecting Mullvad...")
+    sh.mullvad("reconnect")
+    time.sleep(5)
+    response = sh.mullvad("status")
+    print(response)
+
