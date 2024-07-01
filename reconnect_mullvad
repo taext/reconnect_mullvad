@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 #   reconnect_mullvad_every_n_seconds
-#     v0.3 July 1st '24 by d@v1d.dk
+#     v0.31 July 1st '24 by d@v1d.dk
 
-import time, sh, sys, re
+import time, sh, sys, re, random, argparse
 from progress.bar import FillingSquaresBar as Bar
-import random, argparse
+
 
 description = """Waits for n minutes and then changes Mullvad IP, optionally also country. 
                  Ctrl-C to change now and restart timer, Ctrl-C twice to exit."""
@@ -35,23 +35,22 @@ while True:
         except KeyboardInterrupt:
             try:
                 time.sleep(0.5)
-                break # breaks for loop (only), finishes while loop
+                break # breaks for loop only, finishes while loop
             except KeyboardInterrupt:
                 print(f"\nexiting... \nthank you for using {filename}")
                 sys.exit()
     print("\nreconnecting Mullvad...")
-    if not args.countries:    
+    if not args.countries:      # only update IP (same country)    
         sh.mullvad("reconnect")
-        time.sleep(2)
+        time.sleep(2)    # wait for mullvad reconnect or user Ctrl-C
         response = sh.mullvad("status")
-        #print(response)
-    else:
+    else:                       # also update country
         countries = set(args.countries.split())
         countries_wo_current = list(countries - current_country)
         rand_country = random.choice(countries_wo_current)
         sh.mulocation(rand_country)
         try:
-            time.sleep(2)
+            time.sleep(2) # wait for mullvad reconnect or user Ctrl-C
         except KeyboardInterrupt:
             print(f"\nexiting... \nthank you for using {filename}")
             sys.exit()
