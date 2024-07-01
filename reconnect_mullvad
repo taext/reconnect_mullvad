@@ -2,9 +2,9 @@
 # PYTHON_ARGCOMPLETE_OK
 
 #           reconnect_mullvad
-#     v0.32 July 2nd '24 by d@v1d.dk
+#     v0.33 July 2nd '24 by d@v1d.dk
 
-import time, sh, sys, re, random, argparse, argcomplete
+import time, sh, sys, re, random, argparse, argcomplete, subprocess
 from progress.bar import FillingSquaresBar as Bar
 
 
@@ -50,9 +50,11 @@ while True:
         countries = set(args.countries.split())
         countries_wo_current = list(countries - current_country)
         rand_country = random.choice(countries_wo_current)
-        sh.mulocation(rand_country)
+        # sh.mulocation(rand_country)
+        process = subprocess.Popen(["mulocation", rand_country])
+        process.wait()
         try:
-            time.sleep(2) # wait for mullvad reconnect or user Ctrl-C
+            time.sleep(0.5) # wait for mullvad reconnect or user Ctrl-C
         except KeyboardInterrupt:
             print(f"\nexiting... \nthank you for using {filename}")
             sys.exit()
