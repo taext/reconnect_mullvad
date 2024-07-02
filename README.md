@@ -57,7 +57,3 @@ add `--countries` option to input a string of two-character country codes to alt
 
 While the timer is active and counting down, press Ctrl-C once to change IP now and reset timer, Ctrl-C twice to exit.
 
-
-```python
-
-```
