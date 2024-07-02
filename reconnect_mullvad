@@ -2,7 +2,7 @@
 # PYTHON_ARGCOMPLETE_OK
 
 #           reconnect_mullvad
-#     v0.33 July 2nd '24 by d@v1d.dk
+#     v0.34 July 2nd '24 by d@v1d.dk
 
 import time, sh, sys, re, random, argparse, argcomplete, subprocess
 from progress.bar import FillingSquaresBar as Bar
@@ -13,7 +13,7 @@ description = """Waits for n minutes and then changes Mullvad IP, optionally als
 parser = argparse.ArgumentParser(description=description)
 parser.add_argument("time_in_minutes", help="time to wait in minutes")
 parser.add_argument("-c", "--countries", help="a string of 2-character country codes to randomly alternate between")
-parser.add_argument("-a", "--alert", help="add before alert n seconds before changing IP")
+parser.add_argument("-a", "--alert", help="alert n seconds before changing IP")
 
 argcomplete.autocomplete(parser)
 args = parser.parse_args()
