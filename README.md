@@ -1,6 +1,3 @@
-Starter v0.1 reconnect_mullvad documentation
-
-kl. 18:31 2. juli '24 by d@v1d.dk
 
 ## reconnect_mullvad docs v0.1
 
@@ -8,7 +5,7 @@ View the command-line help with option `-h`
 
 
 ```python
-! reconnect_mullvad -h
+reconnect_mullvad -h
 ```
 
     usage: reconnect_mullvad [-h] [-c COUNTRIES] time_in_minutes
@@ -32,7 +29,7 @@ reconnect_mullvad needs a wait time in minutes argument, here 15 minutes to rene
 
 
 ```python
-! reconnect_mullvad 15
+reconnect_mullvad 15
 ```
 
     Connected to de-fra-wg-103 in Frankfurt, Germany
@@ -46,7 +43,7 @@ add `--countries` option to input a string of two-character country codes to alt
 
 
 ```python
-! reconnect_mullvad 15 --countries "de se no"
+reconnect_mullvad 15 --countries "de se no"
 ```
 
     Connected to se-sto-wg-014 in Stockholm, Sweden
@@ -60,7 +57,3 @@ add `--countries` option to input a string of two-character country codes to alt
 
 While the timer is active and counting down, press Ctrl-C once to change IP now and reset timer, Ctrl-C twice to exit.
 
-
-```python
-
-```
