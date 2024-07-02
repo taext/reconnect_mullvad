@@ -1,5 +1,5 @@
 
-## reconnect_mullvad docs v0.1
+## reconnect_mullvad docs v0.11
 
 View the command-line help with option `-h`
 
