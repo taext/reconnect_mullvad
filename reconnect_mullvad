@@ -13,6 +13,8 @@ description = """Waits for n minutes and then changes Mullvad IP, optionally als
 parser = argparse.ArgumentParser(description=description)
 parser.add_argument("time_in_minutes", help="time to wait in minutes")
 parser.add_argument("-c", "--countries", help="a string of 2-character country codes to randomly alternate between")
+parser.add_argument("-a", "--alert", help="add before alert n seconds before changing IP")
+
 argcomplete.autocomplete(parser)
 args = parser.parse_args()
 
@@ -34,6 +36,9 @@ while True:
         try:
             time.sleep(1)
             bar.next()
+            if args.alert:
+                if i == time_in_secs - int(args.alert):
+                    sh.notify_send(f"Upcoming IP change in {args.alert} seconds...")
         except KeyboardInterrupt:
             try:
                 time.sleep(0.5) # wait for second Ctrl-C to exit
