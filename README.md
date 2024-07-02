@@ -1,6 +1,3 @@
-Starter v0.1 reconnect_mullvad documentation
-
-kl. 18:31 2. juli '24 by d@v1d.dk
 
 ## reconnect_mullvad docs v0.1
 
