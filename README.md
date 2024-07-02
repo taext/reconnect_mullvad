@@ -8,19 +8,21 @@ View the command-line help with option `-h`
 reconnect_mullvad -h
 ```
 
-    usage: reconnect_mullvad [-h] [-c COUNTRIES] time_in_minutes
-    
-    Waits for n minutes and then changes Mullvad IP, optionally also country.
-    Ctrl-C to change now and restart timer, Ctrl-C twice to exit.
-    
-    positional arguments:
-      time_in_minutes       time to wait in minutes
-    
-    options:
-      -h, --help            show this help message and exit
-      -c COUNTRIES, --countries COUNTRIES
-                            a string of 2-character country codes to randomly
-                            alternate between
+usage: reconnect_mullvad [-h] [-c COUNTRIES] [-a ALERT] time_in_minutes
+
+Waits for n minutes and then changes Mullvad IP, optionally also country. Ctrl-C to
+change now and restart timer, Ctrl-C twice to exit.
+
+positional arguments:
+  time_in_minutes       time to wait in minutes
+
+options:
+  -h, --help            show this help message and exit
+  -c COUNTRIES, --countries COUNTRIES
+                        a string of 2-character country codes to randomly alternate
+                        between
+  -a ALERT, --alert ALERT
+                        alert n seconds before changing IP
 
 
 ###
