@@ -46,7 +46,7 @@ while True:
             except KeyboardInterrupt:
                 print(f"\nexiting... \nthank you for using {filename}")
                 sys.exit()
-    print("\n\nreconnecting Mullvad...")
+    print("\n\nReconnecting Mullvad...")
     if not args.countries:      # only update IP (same country)    
         sh.mullvad("reconnect")
         time.sleep(2)    # wait for mullvad
@@ -59,7 +59,7 @@ while True:
         process = subprocess.Popen(["mulocation", rand_country])
         process.wait()
         try:
-            time.sleep(0.5) # wait for mullvad reconnect or user Ctrl-C
+            time.sleep(2) # wait for mullvad reconnect or user Ctrl-C
         except KeyboardInterrupt:
             print(f"\nexiting... \nthank you for using {filename}")
             sys.exit()
