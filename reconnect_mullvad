@@ -55,8 +55,7 @@ while True:
         countries = set(args.countries.split())
         countries_wo_current = list(countries - current_country)
         rand_country = random.choice(countries_wo_current)
-        # sh.mulocation(rand_country)
-        process = subprocess.Popen(["mulocation", rand_country])
+        process = subprocess.Popen(["mullvad", "relay", "set", "location", rand_country])
         process.wait()
         try:
             time.sleep(2) # wait for mullvad reconnect or user Ctrl-C
