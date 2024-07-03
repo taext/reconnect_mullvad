@@ -2,7 +2,7 @@
 # PYTHON_ARGCOMPLETE_OK
 
 #           reconnect_mullvad
-#     v0.34 July 2nd '24 by d@v1d.dk
+#     v0.35 July 3nd '24 by d@v1d.dk
 
 import time, sh, sys, re, random, argparse, argcomplete, subprocess
 from progress.bar import FillingSquaresBar as Bar
