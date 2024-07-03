@@ -2,7 +2,7 @@
 # PYTHON_ARGCOMPLETE_OK
 
 #           reconnect_mullvad
-#     v0.35 July 3nd '24 by d@v1d.dk
+#     v0.36 July 3nd '24 by d@v1d.dk
 
 import time, sh, sys, re, random, argparse, argcomplete, subprocess
 from progress.bar import FillingSquaresBar as Bar
@@ -21,13 +21,18 @@ args = parser.parse_args()
 time_in_minutes = int(args.time_in_minutes)
 time_in_secs = time_in_minutes * 60
 
+def get_current_country():
+    time.sleep(1)
+    mullvad_status = sh.mullvad("status")
+    m = re.findall('Connect...? to (\w\w)', mullvad_status)
+    current_country = set(m[0]) 
+    return current_country, mullvad_status
+
 
 filename = sys.argv[0].split("/")[-1]
 while True:
-    mullvad_status = sh.mullvad("status")
+    current_country, mullvad_status = get_current_country()
     print(mullvad_status)
-    m = re.findall('Connect...? to (\w\w)', mullvad_status)
-    current_country = set(m[0]) 
     if time_in_minutes > 1:
         bar = Bar(f'Waiting {time_in_minutes} minutes', max=time_in_secs)
     else:
@@ -56,11 +61,16 @@ while True:
         countries_wo_current = list(countries - current_country)
         rand_country = random.choice(countries_wo_current)
         process = subprocess.Popen(["mullvad", "relay", "set", "location", rand_country])
-        process.wait()
-        try:
-            time.sleep(2) # wait for mullvad reconnect or user Ctrl-C
-        except KeyboardInterrupt:
-            print(f"\nexiting... \nthank you for using {filename}")
-            sys.exit()
+        #process.wait()
+        current_country, _ = get_current_country()
+        i = 0
+        while current_country == rand_country and i < 20:
+            try:
+                time.sleep(1) # wait for mullvad reconnect or user Ctrl-C
+                current_country = get_current_country()
+                i += 1
+            except KeyboardInterrupt:
+                print(f"\nexiting... \nthank you for using {filename}")
+                sys.exit()
 
 
