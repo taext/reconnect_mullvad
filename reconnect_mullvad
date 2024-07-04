@@ -10,14 +10,17 @@ from progress.bar import FillingSquaresBar as Bar
 __version__ = "v0.37"
 __created__ = "July 4th '24"
 
-description = """Wait for n minutes and renew Mullvad IP, optionally also country. 
+description = """Wait for n minutes and change Mullvad IP, optionally also country. 
                  Ctrl-C to change now and restart timer, Ctrl-C twice to exit."""
 parser = argparse.ArgumentParser(description=description)
 parser.add_argument("time_in_minutes", help="time to wait in minutes")
-parser.add_argument("-c", "--countries", help="a string of 2-character country codes to alternate between")
+parser.add_argument("-c", "--countries", help="string of two-character country codes \"de no se\"")
+parser.add_argument("-f", "--file", help="use country codes string from file")
 parser.add_argument("-a", "--alert", help="alert n seconds before changing IP")
-parser.add_argument("-v", "--version", action='version', version=f'%(prog)s {__version__} ({__created__})', help=f'show version number ({__version__})')
-parser.add_argument("-f", "--file", help="use file of country codes")
+parser.add_argument("-v", "--version", 
+                    action='version', 
+                    version=f'%(prog)s {__version__} ({__created__})', 
+                    help=f'show version number ({__version__})')
 argcomplete.autocomplete(parser)
 args = parser.parse_args()
 
@@ -55,15 +58,11 @@ while True:
                 print(f"\nexiting... \nthank you for using {filename}")
                 sys.exit()
     print("\n\nReconnecting Mullvad...")
+
     if not args.countries and not args.file:      # only update IP (same country)    
         sh.mullvad("reconnect")
         time.sleep(2)    # wait for mullvad
-        response = sh.mullvad("status")
-    
-    # elif args.file:
-    #     with open(args.file, 'r') as f:
-    #         file_read = f.read()
-    #         countries = file_read.split()
+        # response = sh.mullvad("status")
     
     elif args.countries or args.file:       # also update country
         if args.file:
@@ -75,7 +74,6 @@ while True:
         countries_wo_current = list(countries - current_country)
         rand_country = random.choice(countries_wo_current)
         process = subprocess.Popen(["mullvad", "relay", "set", "location", rand_country])
-        #process.wait()
         current_country, _ = get_current_country()
         i = 0
         while current_country == rand_country and i < 20:
