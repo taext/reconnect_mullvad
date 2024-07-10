@@ -2,13 +2,15 @@
 # PYTHON_ARGCOMPLETE_OK
 
 #           reconnect_mullvad
-#     v0.37 July 3rd '24 by d@v1d.dk
+#     v0.39 July 10th '24 by d@v1d.dk
 
-import time, sh, sys, re, random, argparse, argcomplete, subprocess
+import time, sh, sys, re, random, argparse, argcomplete, subprocess, os
 from progress.bar import FillingSquaresBar as Bar
 
-__version__ = "v0.37"
-__created__ = "July 4th '24"
+__version__ = "v0.39"
+__date__ = "July 10th '24"
+
+path_to_file = "/home/dd/Documents/reconnect_mullvad/" # for using the --file option
 
 description = """Wait for n minutes and change Mullvad IP, optionally also country. 
                  Ctrl-C to change now and restart timer, Ctrl-C twice to exit."""
@@ -19,7 +21,7 @@ parser.add_argument("-f", "--file", help="use country codes string from file")
 parser.add_argument("-a", "--alert", help="alert n seconds before changing IP")
 parser.add_argument("-v", "--version", 
                     action='version', 
-                    version=f'%(prog)s {__version__} ({__created__})', 
+                    version=f'%(prog)s {__version__} ({__date__})', 
                     help=f'show version number ({__version__})')
 argcomplete.autocomplete(parser)
 args = parser.parse_args()
@@ -66,7 +68,7 @@ while True:
     
     elif args.countries or args.file:       # also update country
         if args.file:
-            with open(args.file, 'r') as f:
+            with open(path_to_file + args.file, 'r') as f:
                 file_read = f.read()
                 countries = set(file_read.split())
         else:                     
